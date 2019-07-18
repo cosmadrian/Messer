@@ -7,6 +7,8 @@ const commandTypes = require("./command-types");
 /* Store regexps that match raw commands */
 const commandShortcuts = {
   h: commandTypes.HISTORY,
+  l: commandTypes.LOCK,
+  ul: commandTypes.UNLOCK,
   m: commandTypes.MESSAGE,
   r: commandTypes.REPLY,
   c: commandTypes.CLEAR,
@@ -19,7 +21,9 @@ const commandShortcuts = {
  * @return {Array<String>}
  */
 function parseCommand(regexp, rawCommand) {
-  if (regexp) return rawCommand.match(regexp);
+  if (regexp) {
+    return rawCommand.match(regexp);
+  }
 
   // return a 1-item array if no regex i.e. 1 word commands (contacts, etc.)
   return [rawCommand.trim()];
@@ -384,7 +388,7 @@ const commands = {
       if (lock.isLocked()) {
         const threadName = lock.getLockedTarget();
         lock.unlock();
-        return resolve("Unlocked form ".concat(threadName));
+        return resolve("Unlocked from ".concat(threadName));
       }
       return reject(Error("No current locked user"));
     });

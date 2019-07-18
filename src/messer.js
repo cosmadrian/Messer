@@ -98,7 +98,8 @@ Messer.prototype.processCommand = function processCommand(rawCommand) {
   let commandHandler = getCommandHandler(args[0]);
 
   if (lock.isLocked()) {
-    if (localCommand.trim() === "unlock") {
+    cmd = localCommand.trim().split(" ")[0];
+    if (cmd === "unlock" || cmd === "ul") {
       commandHandler = getCommandHandler("unlock");
     } else {
       commandHandler = getCommandHandler("m");
