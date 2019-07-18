@@ -10,8 +10,7 @@ const commandShortcuts = {
   l: commandTypes.LOCK,
   ul: commandTypes.UNLOCK,
   m: commandTypes.MESSAGE,
-  r: commandTypes.REPLY,
-  c: commandTypes.CLEAR,
+  r: commandTypes.RECENT,
 };
 
 /**
@@ -77,7 +76,7 @@ const commands = {
             err => {
               if (err) return reject(err);
 
-              return resolve(`Sent message to ${thread.name}`);
+              return resolve(``);
             },
           );
         })
@@ -365,6 +364,7 @@ const commands = {
         })
         .then(() => {
           lock.lockOn(receiver);
+          this.repl.setPrompt("[" + receiver + "] > ");
           return resolve("Locked on to ".concat(receiver));
         })
         .catch(() =>

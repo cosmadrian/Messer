@@ -53,7 +53,7 @@ Messer.prototype.start = function start() {
 
       this.messen.listen();
 
-      repl.start({
+      this.repl = repl.start({
         ignoreUndefined: true,
         eval: (input, context, filename, cb) =>
           this.processCommand(input)
@@ -100,7 +100,13 @@ Messer.prototype.processCommand = function processCommand(rawCommand) {
   if (lock.isLocked()) {
     cmd = localCommand.trim().split(" ")[0];
     if (cmd === "unlock" || cmd === "ul") {
+      this.repl.setPrompt("> ");
       commandHandler = getCommandHandler("unlock");
+    } else if (cmd[0] === "/") {
+      commandName = localCommand.split(" ")[0];
+      commandName =
+        commandName.slice(1, -1) + commandName[commandName.length - 1];
+      commandHandler = getCommandHandler(commandName);
     } else {
       commandHandler = getCommandHandler("m");
       localCommand = "m "
